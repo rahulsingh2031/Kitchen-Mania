@@ -18,10 +18,16 @@ public class GameManager : MonoBehaviour
     private float countdownToStartTimer = 3f;
     private float gamePlayingTimer = 0f;
     private float gamePlayingTimerMax = 10f;
+    private bool isGamePause = false;
+
     private void Awake()
     {
         Instance = this;
         state = GameState.WaitingToStart;
+    }
+    private void Start()
+    {
+        GameInput.Instance.OnPauseAction += PauseUnpause;
     }
     private void Update()
     {
@@ -83,5 +89,16 @@ public class GameManager : MonoBehaviour
     public float GetGamePlayingTimerNormalized()
     {
         return 1 - (gamePlayingTimer / gamePlayingTimerMax);
+    }
+
+    private void PauseUnpause()
+    {
+        isGamePause = !isGamePause;
+        if (isGamePause)
+            Time.timeScale = 0f;
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 }
